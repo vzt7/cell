@@ -1,0 +1,30 @@
+{
+  "name": "cell",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:vzt7/cell.git",
+  "author": "vzt7 <vvzt666666@foxmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "debug": "node --inspect ./src/app.js",
+    "commit": "git-cz"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "koa": "^2.11.0",
+    "koa-router": "^8.0.8",
+    "random-useragent": "^0.3.1",
+    "superagent": "^5.2.2",
+    "superagent-no-cache": "^0.1.1"
+  },
+  "devDependencies": {
+    "commitizen": "^4.0.5",
+    "cz-conventional-changelog": "^3.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  }
+}
