@@ -12,15 +12,15 @@ router.get('/', async (ctx, next) => {
 });
 router.get('/entry', async (ctx, next) => {
   // 简易的 pipeline
-  controllers.entry();
-  ctx.body = 'entry processor';
+  const entryList = await controllers.entry();
+  ctx.body = entryList;
   next();
 });
 router.get('/detail', async (ctx, next) => {
   // 简易的 pipeline
-  const entryList = controllers.entry();
-  controllers.detail(entryList);
-  ctx.body = 'detail processor';
+  const entryList = await controllers.entry();
+  const detailList = await controllers.detail(entryList);
+  ctx.body = detailList;
   next();
 });
 
