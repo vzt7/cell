@@ -4,9 +4,10 @@ const fs = require('fs');
 const relPath = path.resolve('dist');
 
 const saveToDist = (subPath, data) => {
-  console.log('save to dist:');
+  const decodeSubPath = decodeURIComponent(subPath);
+  console.log(`save to dist: ${decodeSubPath}`);
   try {
-    const distPath = `${relPath}/${subPath}`;
+    const distPath = `${relPath}/${decodeSubPath}`;
     fs.writeFile(distPath, data, (err) => {
       if (err) throw err;
       console.log(`[ok] write file: ${distPath}`);
