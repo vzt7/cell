@@ -1,5 +1,7 @@
+/**
+ * 监听 mouse click - 通过[点击元素位置信息]及[光标位置]判断是否为正常点击
+ */
 const MAX_ABNORMAL_CLICK_COUNT = 3;
-
 const pos = [];
 const clickTracker = {
   record: (data) => {
@@ -30,6 +32,10 @@ const clickTracker = {
       // 超过指定阈值且含有异常点击时
       if (compareArr.length >= MAX_ABNORMAL_CLICK_COUNT && compareArr.find(item => !item.isValidClick)) {
         console.warn('点击异常', pos);
+        const cb = clickTracker.callback;
+        if (Object.prototype.toString.call(cb) === '[object Function]') {
+          cb.apply(window);
+        }
         return true;
       }
     }
@@ -55,6 +61,11 @@ const clickTracker = {
       setTimeout(() => initTracker(), 1500);
     }
   },
+  reset: () => {
+    window.removeEventListener('click', clickTracker.handler);
+  }
 };
 
 clickTracker.init();
+
+module.exports = clickTracker;

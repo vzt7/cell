@@ -28,6 +28,6 @@ const getBanList = () => {
   return banList;
 }
 
-getBanList();
+// getBanList();
 
 module.exports = getBanList;
