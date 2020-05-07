@@ -7,9 +7,9 @@ const randomUseragent = require('random-useragent');
 
 const sleep = require('../utils/sleep');
 const preset = require('../preset');
-const saveToDist = require('../utils/save');
+const saveFile = require('../utils/save');
 const getProxy = require('../utils/proxy');
-const distPath = path.resolve('dist');
+const scriptPath = path.resolve('scripts');
 
 const MAX_FIAL_RETRY_TIMES = 20; // 最大重试次数
 
@@ -26,7 +26,7 @@ const parseHtml = (html) => {
 
 const fetchDetail = (url) => {
   // use cache
-  const fileNames = fs.readdirSync(distPath);
+  const fileNames = fs.readdirSync(scriptPath);
   const decodeUrl = decodeURIComponent(url);
   const scriptFile = fileNames.find(name => decodeUrl.includes(name.split('-')[2])); // script-code-[id]-[name].
   const matchRes = scriptFile && scriptFile.match(/^script-code-(\d+)-.+/);
@@ -34,7 +34,7 @@ const fetchDetail = (url) => {
     console.log(`[cache] use cache file : ${scriptFile}`);
     // 缓存时间内直接使用现有数据
     return new Promise((resolve, reject) => {
-      fs.readFile(`${distPath}/${scriptFile}`, (err, data) => {
+      fs.readFile(`${scriptPath}/${scriptFile}`, (err, data) => {
         if (err) throw err;
         resolve(data);
       });
@@ -62,7 +62,7 @@ const doRequest = (url, resolve, failCount = 0) => {
         // parse detail page html
         const scriptName = url.match(/\/(\d+-.+)\/code/)[1];
         parseHtml(res.text).then((data) => {
-          saveToDist(`script-code-${scriptName}.js`, data);
+          saveFile(`script-code-${scriptName}.js`, data);
           // 随机间隔几秒后下一个
           const randomSleepSeconds = ~~(Math.random() * 10) * 1000;
           console.log(`[ing] ok, fetch next after ${randomSleepSeconds / 1000} seconds... `);
@@ -70,7 +70,7 @@ const doRequest = (url, resolve, failCount = 0) => {
             resolve(data);
           });
         });
-        // saveToDist(`/script-${scriptName}.html`, res.text);
+        // saveFile(`/script-${scriptName}.html`, res.text);
       } else {
         if (failCount >= MAX_FIAL_RETRY_TIMES) throw err;
         console.log(`[fail] net error, retry with next ip ... [${failCount}]`);

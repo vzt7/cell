@@ -1,9 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 
-const relPath = path.resolve('dist');
+const relPath = path.resolve('scripts');
 
-const saveToDist = (subPath, data) => {
+const saveFile = (subPath, data) => {
   const decodeSubPath = decodeURIComponent(subPath);
   console.log(`save to dist: ${decodeSubPath}`);
   try {
@@ -18,4 +18,4 @@ const saveToDist = (subPath, data) => {
 }
 
 
-module.exports = saveToDist;
+module.exports = saveFile;

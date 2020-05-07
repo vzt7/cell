@@ -6,15 +6,15 @@ require('superagent-proxy')(superagent); // proxy
 const cheerio = require('cheerio');
 
 const preset = require('../preset');
-const saveToDist = require('../utils/save');
+const saveFile = require('../utils/save');
 const getProxy = require('../utils/proxy');
-const distPath = path.resolve('dist');
+const scriptPath = path.resolve('scripts');
 
 
 const fetchScriptLinkList = () => {
   console.log('[ok] fetch html...');
   // use cache
-  const fileNames = fs.readdirSync(distPath);
+  const fileNames = fs.readdirSync(scriptPath);
   const entryFile = fileNames.find(name => name.startsWith('entry'));
   const matchRes = entryFile && entryFile.match(/^entry-(\d+)/);
   const genDate = entryFile && matchRes ? Number.parseInt(matchRes[1]) : Number.POSITIVE_INFINITY;
@@ -22,7 +22,7 @@ const fetchScriptLinkList = () => {
     console.log(`[cache] use entry cache file : ${entryFile}`);
     // 缓存时间内直接使用现有数据
     return new Promise((resolve, reject) => {
-      fs.readFile(`${distPath}/${entryFile}`, (err, data) => {
+      fs.readFile(`${scriptPath}/${entryFile}`, (err, data) => {
         if (err) throw err;
         resolve(JSON.parse(data));
       });
@@ -60,7 +60,7 @@ const parseHtml = (html) => {
       hrefs.push(href);
     });
 
-    saveToDist(`entry-${Date.now()}.json`, JSON.stringify(hrefs));
+    saveFile(`entry-${Date.now()}.json`, JSON.stringify(hrefs));
     resolve(hrefs);
   });
 }

@@ -1,0 +1,2 @@
+
+require('./ban/click');
