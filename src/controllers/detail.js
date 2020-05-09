@@ -73,7 +73,7 @@ const doRequest = (url, resolve, failCount = 0) => {
         // saveFile(`/script-${scriptName}.html`, res.text);
       } else {
         if (failCount >= MAX_FIAL_RETRY_TIMES) throw err;
-        console.log(`[fail] net error, retry with next ip ... [${failCount}]`);
+        console.log(`[fail] net error, retry with next proxy ip ... [${failCount}]`);
         doRequest(url, resolve, failCount + 1);
       }
     })
@@ -91,5 +91,12 @@ const fetchDetails = async (entryList) => {
 
 }
 
+const showDetails = () => {
+  const fileNames = fs.readdirSync(scriptPath);
+  return fileNames.filter(f => f.startsWith('script-code-'));
+}
 
-module.exports = fetchDetails;
+module.exports = {
+  fetchDetails,
+  showDetails,
+};

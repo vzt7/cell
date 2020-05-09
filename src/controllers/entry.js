@@ -33,8 +33,8 @@ const fetchScriptLinkList = () => {
     superagent
       .get('https://greasyfork.org/zh-CN/scripts/by-site/icourse163.org')
       // .use(nocache)
-      .proxy(getProxy())
-      .timeout({ response: 5 * 1000, deadline: 60 * 1000 })
+      // .proxy(getProxy())
+      .timeout({ response: 25 * 1000, deadline: 120 * 1000 })
       .end((err, res) => {
         if (!err) {
           console.log('[ok] parse html ...');
@@ -70,4 +70,6 @@ const getUserScriptEntries = async () => {
   return list;
 }
 
-module.exports = getUserScriptEntries;
+module.exports = {
+  getUserScriptEntries,
+};

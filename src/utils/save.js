@@ -5,12 +5,12 @@ const relPath = path.resolve('scripts');
 
 const saveFile = (subPath, data) => {
   const decodeSubPath = decodeURIComponent(subPath);
-  console.log(`save to dist: ${decodeSubPath}`);
+  console.log(`[ok] save to: ${decodeSubPath}`);
   try {
     const distPath = `${relPath}/${decodeSubPath}`;
     fs.writeFile(distPath, data, (err) => {
       if (err) throw err;
-      console.log(`[ok] write file: ${distPath}`);
+      console.log(`[saved] write file: ${distPath}`);
     });
   } catch(err) {
     throw new Error(err);

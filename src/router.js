@@ -3,27 +3,31 @@ const controllers = require('./controllers');
 
 
 router.get('/', async (ctx, next) => {
-  // 简易的 pipeline
-  // const calls = Object.values(controllers);
-  // for (let i = 0, nextArg = undefined; i < calls.length; i++) {
-  //   nextArg = await calls[i](nextArg);
-  // }
-  ctx.body = Object.keys(controllers).join('processor\n');
+  ctx.body = Object.keys(controllers).join(' processor\n');
   next();
 });
 
 router.get('/entry', async (ctx, next) => {
   // 简易的 pipeline
-  const entryList = await controllers.entry();
+  const { getUserScriptEntries } = controllers.entry;
+  const entryList = await getUserScriptEntries();
   ctx.body = entryList;
   next();
 });
 
 router.get('/detail', async (ctx, next) => {
   // 简易的 pipeline
-  const entryList = await controllers.entry();
-  const detailList = await controllers.detail(entryList);
+  const { showDetails } = controllers.detail;
+  const detailList = await showDetails();
   ctx.body = detailList;
+  next();
+});
+
+router.get('/detail/blacklist', async (ctx, next) => {
+  // 简易的 pipeline
+  const { getKeyWordsBlackList } = controllers.detail;
+  const blackList = await getKeyWordsBlackList();
+  ctx.body = blackList;
   next();
 });
 

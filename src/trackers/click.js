@@ -34,7 +34,7 @@ const clickTracker = {
         console.warn('点击异常', pos);
         const cb = clickTracker.callback;
         if (Object.prototype.toString.call(cb) === '[object Function]') {
-          cb.apply(window);
+          cb.call(window, pos);
         }
         return true;
       }
@@ -55,11 +55,7 @@ const clickTracker = {
     clickTracker.check();
   },
   init: () => {
-    if (window) {
-      window.addEventListener('click', clickTracker.handler);
-    } else {
-      setTimeout(() => initTracker(), 1500);
-    }
+    window.addEventListener('click', clickTracker.handler);
   },
   reset: () => {
     window.removeEventListener('click', clickTracker.handler);

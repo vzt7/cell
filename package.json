@@ -9,6 +9,7 @@
     "start": "node ./src/app.js",
     "debug": "node --inspect ./src/app.js",
     "build": "parcel build ./src/ban.js",
+    "ban": "node ./src/controllers/ban.js",
     "commit": "git-cz"
   },
   "dependencies": {
