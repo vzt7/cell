@@ -97,7 +97,6 @@ const clickTracker = {
   // handler 过滤
   presetFitler: (e) => {
 
-    const panelClassName = 'j-choicebox';
     const isClickOnQuizDoingPanel = e.path.find(el => el && el.className && el.className.includes(panelClassName));
     if (!isClickOnQuizDoingPanel) return false;
 
@@ -143,4 +142,4 @@ const clickTracker = {
 
 clickTracker.init();
 
-// module.exports = clickTracker;
+module.exports = clickTracker;
