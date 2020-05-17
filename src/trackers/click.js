@@ -1,6 +1,9 @@
 /**
  * 监听 mouse click - 通过[点击元素位置信息]及[光标位置]判断是否为正常点击
  */
+
+// Selection.collapse() 可以模拟光标位置
+
 const MAX_ABNORMAL_CLICK_COUNT = 1;
 const MAX_RECORD_LEN = 7;
 
