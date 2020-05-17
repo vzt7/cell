@@ -1,43 +1,51 @@
 /**
- * 覆写 addEventListener 方法
- * 并通过 Event.isTrusted 判断是否执行事件
+ * 代理 addEventListener 方法
+ * 并通过 Event.isTrusted 判断是否为用户操作
  */
 
 // https://css-tricks.com/capturing-all-events/
 
-const isDebug = () => location.hash.includes('eventBorder');
-const setDebugerBorder = (node, eventHandler) => {
-  if (node && node.nodeType === Node.ELEMENT_NODE) {
-    node.style.border = '2px solid pink';
-    node.title = eventHandler.toString();
-  }
-}
+const { antiChromeDebugger } = require('./anti-debugger');
+const { setEventBorder } = require('./event-border');
+const eventCounter = require('./event-counter');
+
+const isDebug = () => location && location.href.includes('debug=true');
 
 const init = () => {
-  const listenerCount = {};
-  const eventCount = {};
+
   const isDebugEnv = isDebug();
+
+  antiChromeDebugger();
 
   const listener = EventTarget.prototype.addEventListener;
   EventTarget.prototype.addEventListener = function (eventName, eventHandler) {
 
     if (isDebugEnv) {
-      setDebugerBorder(this, eventHandler);
+      setEventBorder(this, eventName, eventHandler);
+      eventCounter.addListenerCount(eventName, eventHandler);
     }
 
-    listenerCount[eventName] = (listenerCount[eventName] || 0) + 1;
     listener.call(this, eventName, function (event) {
-      eventCount[eventName] = (eventCount[eventName] || 0) + 1;
+
+      if (isDebugEnv) {
+        eventCounter.addEventCount(eventName, eventHandler);
+      }
+
       const isTrusted = event.isTrusted;
-      // console.log(eventName, isTrusted, event.target);
       if (isTrusted) {
+        if (isDebugEnv && !['mousemove', 'pointermove', 'scroll'].includes(eventName)) {
+          console.log(`[ok] is trusted user action : ${eventName}`);
+        }
         eventHandler(event);
       } else {
         event.preventDefault();
         event.stopPropagation();
-        console.error(`[addEventListener] script action: ${eventName}`);
+        if (isDebugEnv) {
+          console.error(`[error] script action: ${eventName}`);
+        }
         // window.close();
       }
+
     });
   };
 

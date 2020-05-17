@@ -3,4 +3,4 @@
 // require('./trackers/dom');
 // require('./trackers/ajax');
 // require('./trackers/broswer');
-require('./trackers/event');
+require('./trackers/event/index');
