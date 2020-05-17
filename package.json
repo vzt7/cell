@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node ./src/app.js",
     "debug": "node --inspect ./src/app.js",
-    "build": "parcel build ./src/ban.js",
+    "build": "parcel build ./src/ban.js --no-source-maps --detailed-report",
     "ban": "node ./src/controllers/ban.js",
     "commit": "git-cz"
   },
@@ -17,7 +17,6 @@
     "agendash": "^1.0.0",
     "ajax-hook": "^2.0.2",
     "cheerio": "^1.0.0-rc.3",
-    "escodegen": "^1.14.1",
     "esprima": "^4.0.1",
     "esprima-ast-utils": "^0.0.7",
     "koa": "^2.11.0",
