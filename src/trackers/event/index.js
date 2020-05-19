@@ -6,46 +6,39 @@
 // https://css-tricks.com/capturing-all-events/
 
 const { antiChromeDebugger } = require('./anti-debugger');
-const { setEventBorder } = require('./event-border');
-const eventCounter = require('./event-counter');
+// const { setEventBorder } = require('./event-border');
+// const eventCounter = require('./event-counter');
 
-const isDebug = () => location && location.href.includes('debug=true');
+// const isDebug = () => location && location.href.includes('debug=true');
 
 const init = () => {
-
-  const isDebugEnv = isDebug();
-
+  // const isDebugEnv = isDebug();
   antiChromeDebugger();
 
   const listener = EventTarget.prototype.addEventListener;
   EventTarget.prototype.addEventListener = function (eventName, eventHandler) {
-
-    if (isDebugEnv) {
-      setEventBorder(this, eventName, eventHandler);
-      eventCounter.addListenerCount(eventName, eventHandler);
-    }
-
+    // if (isDebugEnv) {
+    //   setEventBorder(this, eventName, eventHandler);
+    //   // eventCounter.addListenerCount(eventName, eventHandler);
+    // }
     listener.call(this, eventName, function (event) {
-
-      if (isDebugEnv) {
-        eventCounter.addEventCount(eventName, eventHandler);
-      }
-
+      // if (isDebugEnv) {
+      //   eventCounter.addEventCount(eventName, eventHandler);
+      // }
       const isTrusted = event.isTrusted;
       if (isTrusted) {
-        if (isDebugEnv && !['mousemove', 'pointermove', 'scroll'].includes(eventName)) {
-          console.log(`[ok] is trusted user action : ${eventName}`);
-        }
+        // if (isDebugEnv && !['mousemove', 'pointermove', 'scroll'].includes(eventName)) {
+        //   console.log(`[ok] is trusted user action : ${eventName}`);
+        // }
         eventHandler(event);
       } else {
         event.preventDefault();
         event.stopPropagation();
-        if (isDebugEnv) {
-          console.error(`[error] script action: ${eventName}`);
-        }
+        // if (isDebugEnv) {
+        //   console.error(`[error] script action: ${eventName}`);
+        // }
         // window.close();
       }
-
     });
   };
 
